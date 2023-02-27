@@ -1,9 +1,11 @@
 const express=require('express');
 const jwt=require("jsonwebtoken");
 const cors=require('cors');
+const cookiePareser=require('cookie-parser');
 
 const app=express();
 app.use(cors());
+app.use(cookiePareser());
 
 app.get("/",(req,res)=>{
 res.status(200).json({
@@ -25,6 +27,15 @@ app.post("/token",(req,res)=>{
     res.cookie("token",token,option).status(200).json({
         sucess:true,
         message:"token is send",
+        token:token
+    })
+})
+
+app.get("/getToken",(req,res)=>{
+    const {token}=req.cookies;
+    res.status(200).json({
+        sucess:true,
+        message:"your token",
         token:token
     })
 })

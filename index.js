@@ -21,7 +21,7 @@ const option = {
     priority:"high"
   };
 
-app.get("/token",(req,res)=>{
+app.post("/token",(req,res)=>{
     res.cookie("token",token,option).status(200).json({
         sucess:true,
         message:"token is send",

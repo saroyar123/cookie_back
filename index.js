@@ -6,7 +6,7 @@ const cookiePareser=require('cookie-parser');
 const app=express();
 app.use(cors());
 app.use(cookiePareser());
-
+app.use(express.json());
 app.get("/",(req,res)=>{
 res.status(200).json({
     sucess:true,
@@ -14,29 +14,28 @@ res.status(200).json({
 })
 });
 
-const token= jwt.sign({name:"saroyar"},'saroyar');
-// console.log(token);
 
-const option = {
-    expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    httpOnly: true,
-    priority:"high"
-  };
+
 
 app.post("/token",(req,res)=>{
-    res.cookie("token",token,option).status(200).json({
+    const token=jwt.sign({name:"saroyar"},'saroyar');
+    res.status(200).json({
         sucess:true,
         message:"token is send",
         token:token
     })
 })
 
-app.get("/getToken",(req,res)=>{
-    const {token}=req.cookies;
+app.post("/getToken",(req,res)=>{
+    
+    const {token}=req.body;
+    const data=jwt.verify(token,'saroyar');
+   
+
     res.status(200).json({
         sucess:true,
         message:"your token",
-        token:token
+        user:data.name
     })
 })
 
